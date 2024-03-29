@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import './LogOut.css'
 const LogOut = () => {
 
-    
+    const [error, setError] = useState("")
 
     const handelLogOut =(event) =>{
         event.preventDefault()
@@ -11,8 +11,15 @@ const LogOut = () => {
         const email = form.email.value 
         const password = form.password.value 
         const conform = form.conform.value
-
         console.log(email, password, conform)
+        if(password !== conform){
+            setError("Your password not match")
+            return
+        }
+        else if(password.length < 6){
+            setError("Your password 6 number need")
+            return
+        }
     }
 
 
@@ -35,6 +42,7 @@ const LogOut = () => {
             <input className='btn-submit' type="submit" value="Register" />
         </form>
         <p><small>Already have an account? <Link to='/login'>Login</Link></small></p>
+        <p className='text-error'>{error}</p>
     </div>
     );
 };
