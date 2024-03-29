@@ -1,25 +1,38 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './LogOut.css'
+import { AuthContext } from '../../provider/AuthProvider';
 const LogOut = () => {
 
     const [error, setError] = useState("")
-
+    const {createUser} = useContext(AuthContext)
+    // console.log(createUser)
     const handelLogOut =(event) =>{
         event.preventDefault()
         const form = event.target  
         const email = form.email.value 
         const password = form.password.value 
-        const conform = form.conform.value
-        console.log(email, password, conform)
+        const conform = form.confirm.value
+        setError('')
+        console.log(email, password,conform)
         if(password !== conform){
             setError("Your password not match")
             return
         }
-        else if(password.length < 6){
+      else if(password.length < 6){
             setError("Your password 6 number need")
             return
         }
+
+        createUser(email,password)
+        .then(result =>{
+            const loggedUser = result.user
+            console.log(loggedUser)
+        })
+        .catch(error =>{
+            setError(error.message)
+        })
+
     }
 
 
@@ -36,8 +49,8 @@ const LogOut = () => {
                 <input placeholder='Your password' type="password" name="password" id="password" />
             </div>
             <div className="form-control">
-                <label htmlFor="conform">Conform Password</label>
-                <input placeholder='Your password' type="password" name="conform" id="password" />
+                <label htmlFor="confirm">confirm Password</label>
+                <input placeholder='Your password' type="password" name="confirm" id="confirm" />
             </div>
             <input className='btn-submit' type="submit" value="Register" />
         </form>

@@ -4,10 +4,17 @@ import logo from "../../images/Logo.svg";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
 
-
 const Header = () => {
-  const { user } = useContext(AuthContext);
-console.log(user)
+  const { user, logOut } = useContext(AuthContext);
+  console.log(user);
+
+  const handelLogOut = () => {
+    logOut()
+      .then(() => {})
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <nav className="header">
@@ -18,7 +25,13 @@ console.log(user)
         <Link to="/inventory">Inventory</Link>
         <Link to="/login">Login</Link>
         <Link to="/logout">Sign Up</Link>
-        <p>{user && <span>{user.email}</span>}</p>
+        <p>
+          {user && (
+            <span>
+              {user.email} <button onClick={handelLogOut}>Sign Out</button>
+            </span>
+          )}
+        </p>
       </div>
     </nav>
   );

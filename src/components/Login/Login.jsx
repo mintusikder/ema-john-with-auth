@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './Login.css'
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../provider/AuthProvider';
 const Login = () => {
-
+    const {siginUser} = useContext(AuthContext)
     const handelLogIn =(event) =>{
         event.preventDefault()
         const form = event.target  
         const email = form.email.value 
         const password = form.password.value 
-      
+      console.log(email, password)
 
-        console.log(email, password)
+      siginUser(email, password)
+      .then(result =>{
+        const loggedUser = result.user 
+        console.log(loggedUser)
+      })
+      .catch(error =>{
+        console.log(error)
+      })
     }
 
     return (
